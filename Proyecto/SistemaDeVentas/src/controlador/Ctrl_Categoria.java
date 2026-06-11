@@ -37,13 +37,14 @@ public class Ctrl_Categoria {
     //Comprobamos si existe una categoria con el mismo nombre
     public boolean existeCategoria(String categoria) {
         boolean respuesta = false;
-        String sql = "select descripcion from tb_categoria where descripcion = '" + categoria + "';";
-        Statement st;
+        String sql = "select descripcion from tb_categoria where descripcion = ?";
+        PreparedStatement st;
 
         try {
             Connection cn = Conexion.conectar();
-            st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            st = cn.prepareStatement(sql);
+            st.setString(1, categoria);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 respuesta = true;
             }
